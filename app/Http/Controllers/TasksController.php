@@ -58,19 +58,17 @@ class TasksController extends Controller
         $dataedit = Task::find($id);
         return view('test.form',compact('dataedit'));
     }
-
-        public function update($id){
+    public function update($id){
 //        $title = Input::get('title');
 //        $description = Input::get('description');
         
-        $datafrom = Task::create($request->only('title','description'));
+        $datafrom = Task::create(Input::all());  //获取全部表单输入内容
         
-        $dataup = Task::find($id);
-
-    
-        $dataup->title = $datafrom->title;
+        $dataup = Task::find($id); //找到要更新的id
+        
+        $dataup->title = $datafrom->title;  //找到获取的表单字段元素赋值给传入的id
         $dataup->description = $datafrom->description;
-        $dataup->save();
+        $dataup->save(); //把存储的数据保存至数据库。
         
         return redirect('tasks');
     }
