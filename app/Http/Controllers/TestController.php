@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Test;
+
 
 class TestController extends Controller
 {
@@ -13,7 +15,10 @@ class TestController extends Controller
      */
     public function index()
     {
-        //
+        $data = ['username'=>'slgogo','age'=>36];
+        $data01 = Test::where('vip',true)->get();
+        $data02 = Test::orderBy('created_at','desc')->get();
+        return view('index',compact('data','data01','data02'));
     }
 
     /**

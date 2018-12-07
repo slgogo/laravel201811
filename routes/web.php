@@ -71,8 +71,18 @@ Route::get('services', function () {
     return 'This is services pages!';
 });
 
-Route::get('/','TasksController@index');
+Route::get('tasks/','TasksController@index');
 
 Route::get('tasks/create','TasksController@create');
-Route::post('tasks','TasksController@store');
+Route::resource('tasks','TasksController');
+
+//Route::get('tasks/{my_id}',function(Task $my_id){
+//    return View::make('test.index')->with('data_myid',$my_id);
+////    return '传递成功！';
+//});
+Route::get('tasks/number','TasksController@number');
+Route::get('tasks/{id}','TasksController@show');
+
+Route::get('test','TestController@index');
+Route::get('tasks/{id}/edit','TasksController@edit');
 

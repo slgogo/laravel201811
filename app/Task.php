@@ -10,4 +10,8 @@ class Task extends Model
     protected $primaryKey = 'id';
      protected $fillable = ['title', 'description'];
     public $timestamps = false;
+    
+    protected $guarded = ['id'];
+    
+
 }

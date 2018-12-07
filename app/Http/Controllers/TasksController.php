@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\facades\Input;
 use View;
 use App\Task;
+use DB;
+use findOrFail;
 
 class TasksController extends Controller
 {
@@ -14,19 +16,67 @@ class TasksController extends Controller
     }
     public function index(){
         $data = Task::all();
+        
         return View::make('test.index')->with('datas',$data);
     }
-    public function create(){
-        return View::make('test.form');
+    public function number(){
+//        $data01 = DB::table('task')
+//            ->whereBetween('id',[2,5])
+//            ->orderBy('id','desc')
+//            ->where('')
+//            ->select('title')
+//            ->where('id','>','2')
+//            ->inRandomOrder()
+            $data02 = DB::table('task')
+            ->where('id','>','2')
+            ->count();
+//            ->get();
+        return View::make('test.number')->with('data02',$data02);
     }
-    public function store(){
+    public function create(){
+        
+        return view('test.form');
+    }
+
+//    public function store(){
+        public function store(Request $request){
 //        $task = new Task;
 //        $task->title = Input::get('title');
 //        $take->description = Input::get('description');
 //        $task->save();
         
-        Task::create(Input::all());
+
+//        Task::create(Input::all());
+//        $task = $request->only(['title','description']);
+//        $task = $request->all();
+//        dd($task);
+            
+        Task::create($request->only('title','description'));
+        return redirect('tasks'); 
+    }
+    public function edit($id){
+        $dataedit = Task::find($id);
+        return view('test.form',compact('dataedit'));
+    }
+
+        public function update($id){
+//        $title = Input::get('title');
+//        $description = Input::get('description');
         
-        return redirect('/');
+        $datafrom = Task::create($request->only('title','description'));
+        
+        $dataup = Task::find($id);
+
+    
+        $dataup->title = $datafrom->title;
+        $dataup->description = $datafrom->description;
+        $dataup->save();
+        
+        return redirect('tasks');
+    }
+        public function show($id){
+        $datashow = Task::find($id);  //获取全部数据，找到传入的id的数据
+//        $datashow = Task::all()->find($id);  //获取全部数据，找到传入的id的数据
+        return view('single',compact('datashow'));  //把找到的数据传给视图文件使用
     }
 }
